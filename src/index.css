@@ -1,0 +1,264 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* --- 1. GLOBAL VARIABLES --- */
+:root {
+  --text: #ffffff;
+  --text-h: #f3f4f6;
+  --bg: #745F01;
+  --border: #a08c3d;
+  --code-bg: #8a731a;
+  --sidebar-bg: #262626;
+  
+  --radius: 1.5rem;
+  --gap: 1.5rem;
+  --margin: 0.5rem 0.7rem;
+
+  --button-stroke: #FCCF03;
+  --button-glow: #FEE98B;
+  --btn-bg: #FEF1B8;
+  --btn-text: #745F01;
+
+  --heading: 'Poppins', sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  font-family: 'Poppins', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- 2. MEDIA QUERIES & THEME --- */
+@media (max-width: 1024px) {
+  :root { font-size: 16px; }
+  h1 { font-size: 36px !important; margin: 20px 0 !important; }
+  h2 { font-size: 20px !important; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #9ca3af;
+    --text-h: #f3f4f6;
+    --bg: #16171d;
+    --border: #2e303a;
+    --code-bg: #1f2028;
+    --accent: #c084fc;
+    --accent-bg: rgba(192, 132, 252, 0.15);
+    --accent-border: rgba(192, 132, 252, 0.5);
+    --social-bg: rgba(47, 48, 58, 0.5);
+    --shadow: rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
+  #social .button-icon { filter: invert(1) brightness(2); }
+}
+
+/* --- 3. REGISTER TAILWIND UTILITIES --- */
+/* This allows @apply to recognize btn-action */
+@utility btn-action {
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  border: 1px solid var(--button-stroke);
+  box-shadow: 0 0 8px var(--button-glow), 0 0 16px var(--button-glow);
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 0 12px var(--button-glow), 0 0 24px var(--button-glow), 0 0 36px var(--button-glow);
+  }
+}
+
+/* --- 4. ANIMATIONS & BASE ELEMENTS --- */
+@keyframes smartEntrance {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px) scale(0.98); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+  }
+}
+
+.animate-entrance {
+  animation: smartEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+button:hover { cursor: pointer; }
+body { margin: 0; }
+p { margin: 0; }
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background-color: var(--bg);
+  display: flex;
+}
+
+h1, h2 {
+  font-family: var(--heading);
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+h1 { font-size: 30rem; letter-spacing: -1.68px; margin: 32px 0; }
+h2 { font-size: 24px; line-height: 118%; letter-spacing: -0.24px; margin: 0 0 8px; }
+
+code, .counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: 4px;
+  color: var(--text-h);
+}
+
+code {
+  font-size: 15px;
+  line-height: 135%;
+  padding: 4px 8px;
+  background: var(--code-bg);
+}
+
+/* --- 5. COMPONENT STYLES --- */
+.app-container {
+  @apply h-screen w-full flex overflow-hidden relative;
+  padding: 0;
+}
+
+.sidebar-panel {
+  background-color: var(--sidebar-bg);
+  border-radius: var(--radius);
+  width: 20rem;
+  box-shadow: 10px 0 30px -10px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  @apply fixed left-[0.7rem] top-[0.5rem] bottom-[0.5rem] z-40 transform transition-all duration-500 ease-in-out flex flex-col;
+}
+
+.sidebar-panel-visible { @apply translate-x-0 opacity-100 scale-100; }
+.sidebar-panel-hidden { @apply -translate-x-full opacity-0 scale-95 pointer-events-none; }
+
+.sidebar-header { @apply p-6 border-b border-white/10 flex flex-col gap-4; }
+.sidebar-title { @apply text-5xl font-bold text-white flex items-center justify-between ml-1; }
+.note-count { @apply bg-white/10 px-3 py-2 rounded-full text-[10px] uppercase tracking-widest text-yellow-400 ml-5 mt-2; }
+
+.search-container { @apply relative w-full; }
+.search-icon { @apply absolute left-3 top-1/2 -translate-y-1/2 text-white/30; }
+.search-input {
+  @apply w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-yellow-400;
+}
+
+.notes-list { @apply flex-1 overflow-y-auto p-3 space-y-2; }
+.note-item {
+  @apply p-4 cursor-pointer rounded-2xl transition-all duration-300 flex flex-col gap-1 border border-transparent;
+  @apply hover:bg-white/5 hover:scale-[1.02] hover:border-white/10 active:scale-95;
+}
+
+.note-item-active { 
+  @apply bg-yellow-400/10 border-yellow-400/30 shadow-lg;
+  .note-item-title { @apply text-yellow-400; }
+}
+
+.note-item-title { @apply font-semibold text-white truncate text-base; }
+.note-item-date { @apply text-[11px] text-white/40 font-medium; }
+
+.editor-wrapper {
+  @apply h-full w-full transition-all duration-500 ease-in-out;
+  padding: 0.5rem 0.7rem;
+}
+
+.sidebar-panel-visible ~ .editor-wrapper {
+  padding-left: calc(20rem + var(--gap) + 0.7rem);
+}
+
+.editor-panel {
+  background-color: var(--sidebar-bg);
+  border-radius: var(--radius);
+  @apply h-full w-full flex flex-col border-[5px] border-white/5 overflow-hidden shadow-inner relative;
+}
+
+.editor-panel::before {
+  content: "";
+  @apply absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-1000;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1.5px, transparent 1.5px);
+  background-size: 32px 32px;
+}
+
+.editor-panel-ready::before {
+  @apply opacity-100;
+}
+
+.editor-header { 
+  @apply px-6 py-4 border-b border-white/10 flex items-center justify-between bg-black/20;
+  height: 5.5rem;
+}
+
+.editor-title-input {
+  @apply text-3xl font-bold bg-transparent border-none outline-none flex-1 text-white placeholder-white/10 transition-all mx-4;
+}
+
+.editor-actions { @apply flex items-center gap-3; }
+
+.editor-textarea { 
+  @apply flex-1 p-12 bg-transparent border-none outline-none resize-none text-white/90 text-xl leading-relaxed font-light;
+}
+
+.empty-editor { @apply flex-1 flex flex-col items-center justify-center text-center opacity-40 gap-4; }
+.empty-editor-text { @apply text-white text-xl font-medium max-w-xs; }
+
+/* --- 6. BUTTON SEMANTICS --- */
+.btn-sidebar-toggle { @apply p-2 rounded-xl transition-all hover:scale-110 active:scale-90 btn-action; }
+.btn-save { @apply px-6 py-2.5 font-bold rounded-xl flex items-center transition-all hover:scale-105 active:scale-95 btn-action; }
+.btn-delete { @apply px-4 py-2.5 font-bold bg-red-500/20 text-red-400 border border-red-500/40 rounded-xl flex items-center justify-center transition-all hover:bg-red-500 hover:text-white active:scale-95; }
+.btn-sync { @apply px-6 py-2.5 font-bold rounded-xl flex items-center transition-all hover:scale-105 active:scale-95 btn-action; }
+.btn-google { @apply px-6 py-2.5 font-bold bg-red-500 text-white rounded-xl flex items-center transition-all hover:scale-105 active:scale-95; }
+
+/* --- 7. MODALS --- */
+.modal-overlay {
+  @apply fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm transition-opacity duration-200;
+}
+
+.modal-content {
+  background-color: var(--bg);
+  @apply rounded-[2rem] shadow-2xl w-full max-w-sm overflow-hidden border-2 border-white/10 transition-all duration-500 transform flex flex-col items-center p-8 relative;
+  transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.modal-header { @apply w-full flex flex-col items-center mb-4 text-center; }
+.modal-title { @apply text-2xl font-bold text-white; }
+.modal-close-btn { @apply absolute top-6 right-6 text-white/20 hover:text-white transition-colors; }
+
+.modal-body { @apply w-full text-center mb-8; }
+.modal-message { @apply text-white/60 text-base leading-relaxed; }
+
+.modal-footer { @apply w-full flex flex-col items-center gap-2; }
+.modal-cancel-btn { 
+  @apply w-full py-3 text-sm font-bold text-white/40 hover:text-white hover:bg-white/5 rounded-xl transition-all active:scale-95; 
+}
+
+/* Folder Item Styles */
+.folder-item {
+  @apply flex items-center justify-between gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all text-white/60 border border-transparent;
+}
+
+.folder-item:hover {
+  @apply bg-white/5 text-white scale-[1.02] border-white/10;
+  box-shadow: 0 0 10px var(--button-glow);
+}
+
+.folder-item-active {
+  @apply bg-white/10 text-yellow-400 border-yellow-400/30 shadow-lg;
+}
+
+/* Organization Styles */
+.tag-badge {
+  @apply inline-flex items-center gap-1 px-2 py-1 bg-white/5 border border-white/10 rounded-lg text-[11px] text-white/60 hover:text-white hover:bg-white/10 transition-all;
+}
+
+.tag-input {
+  @apply bg-transparent border-none outline-none text-sm text-white placeholder-white/20 min-w-[100px];
+}
+
+.note-item[draggable="true"] {
+  @apply cursor-grab active:cursor-grabbing;
+}
