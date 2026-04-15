@@ -163,7 +163,7 @@ code {
 .note-item-date { @apply text-[11px] text-white/40 font-medium; }
 
 .editor-wrapper {
-  @apply h-full w-full transition-all duration-500 ease-in-out;
+  @apply h-full w-full transition-all duration-500 ease-in-out flex flex-col;
   padding: 0.5rem 0.7rem;
 }
 
@@ -174,14 +174,33 @@ code {
 .editor-panel {
   background-color: var(--sidebar-bg);
   border-radius: var(--radius);
-  @apply h-full w-full flex flex-col border-[5px] border-white/5 overflow-hidden shadow-inner relative;
+  @apply flex-1 w-full flex flex-col border-[5px] border-white/5 overflow-hidden shadow-inner relative;
 }
 
-.editor-panel::before {
+.footer-panel {
+  background-color: var(--sidebar-bg);
+  border-radius: var(--radius);
+  @apply w-full border border-white/10 shadow-inner px-6 py-5 text-slate-300 transition-all duration-500;
+}
+
+.footer-panel a {
+  @apply transition-colors duration-200;
+}
+
+.footer-panel::before {
   content: "";
   @apply absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-1000;
   background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1.5px, transparent 1.5px);
   background-size: 32px 32px;
+}
+
+/* --- 8. CONTACT FORM STYLES --- */
+.contact-input {
+  @apply w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white placeholder-white/30 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-white/20 transition-all;
+}
+
+.contact-textarea {
+  @apply w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white placeholder-white/30 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-white/20 transition-all resize-none;
 }
 
 .editor-panel-ready::before {

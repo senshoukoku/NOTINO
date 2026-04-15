@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import Sidebar from './components/Sidebar';
 import Editor from './components/Editor';
+import Footer from './components/Footer';
 import Modal from './components/Modal';
+import ContactModal from './components/ContactModal';
 import { getNotes, addNote, updateNote, deleteNote, getFolders, addFolder, saveNotes, updateFolder, deleteFolder, saveFolders } from './utils/storage';
 import { Menu } from 'lucide-react';
 
@@ -14,6 +16,7 @@ function App() {
   const [isAppReady, setIsAppReady] = useState(false);
   const [search, setSearch] = useState('');
   const [modal, setModal] = useState(null);
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
   useEffect(() => {
     if (notes.length > 0 && !selectedNoteId) {
@@ -184,9 +187,12 @@ function App() {
           isReady={isAppReady}
           toggleSidebar={toggleSidebar} /* Pass toggleSidebar to Editor */
         />
+        <Footer onOpenContact={() => setIsContactOpen(true)} />
       </div>
+      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
       <Modal isOpen={!!modal} onClose={() => setModal(null)} {...modal} />
     </div>
+  
   );
 }
 
