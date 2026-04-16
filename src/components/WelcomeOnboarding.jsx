@@ -131,7 +131,7 @@ const WelcomeOnboarding = ({ onComplete, onCreateFirstNote }) => {
             {currentStepData.action && (
               <button
                 onClick={currentStepData.action.onClick}
-                className={`btn-action font-bold rounded-xl flex items-center justify-center mx-auto transition-all hover:scale-105 px-6 py-2.5 text-sm mb-4 ${currentStep === 0 ? 'animate-up-down' : ''}`}
+                className={`btn-action font-bold rounded-xl flex items-center justify-center mx-auto transition-all hover:scale-105 px-6 py-2.5 text-sm mt-4 mb-4 ${currentStep === 0 ? 'animate-up-down' : ''}`}
               >
                 {currentStepData.action.label}
                 <ChevronRight size={16} className="ml-2" />
