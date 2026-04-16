@@ -138,6 +138,9 @@ function App() {
 
   const handleSelectNote = (id) => {
     setSelectedNoteId(id);
+    if (isMobile) {
+      setShowSidebar(false);
+    }
   };
 
   const handleUpdateNote = (id, updates) => {
