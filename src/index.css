@@ -276,7 +276,9 @@ code {
 }
 
 .modal-content-mobile {
-  @apply max-w-none w-full h-full rounded-none p-6;
+  @apply max-w-none w-full rounded-none p-6 overflow-auto;
+  max-height: 90vh;
+  min-height: auto;
 }
 
 .modal-header { @apply w-full flex flex-col items-center mb-4 text-center; }
