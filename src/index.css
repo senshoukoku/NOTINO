@@ -338,3 +338,16 @@ code {
     transform: translateY(0) scale(1);
   }
 }
+
+@keyframes bounceUpDown {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-up-down {
+  animation: bounceUpDown 1s ease-in-out infinite;
+}
