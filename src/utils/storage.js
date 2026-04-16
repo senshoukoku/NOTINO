@@ -76,3 +76,14 @@ export const deleteNote = (id) => {
   const filtered = notes.filter(note => note.id !== id);
   saveNotes(filtered);
 };
+
+// Onboarding state management
+const ONBOARDING_KEY = 'notino_hasSeenOnboarding';
+
+export const getOnboardingStatus = () => {
+  return localStorage.getItem(ONBOARDING_KEY) === 'true';
+};
+
+export const setOnboardingStatus = (seen) => {
+  localStorage.setItem(ONBOARDING_KEY, seen.toString());
+};

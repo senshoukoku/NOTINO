@@ -4,7 +4,8 @@ import Editor from './components/Editor';
 import Footer from './components/Footer';
 import Modal from './components/Modal';
 import ContactModal from './components/ContactModal';
-import { getNotes, addNote, updateNote, deleteNote, getFolders, addFolder, saveNotes, updateFolder, deleteFolder, saveFolders } from './utils/storage';
+import WelcomeOnboarding from './components/WelcomeOnboarding';
+import { getNotes, addNote, updateNote, deleteNote, getFolders, addFolder, saveNotes, updateFolder, deleteFolder, saveFolders, getOnboardingStatus, setOnboardingStatus } from './utils/storage';
 import { Menu } from 'lucide-react';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
   const [modal, setModal] = useState(null);
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [showOnboarding, setShowOnboarding] = useState(!getOnboardingStatus() && notes.length === 0);
 
   useEffect(() => {
     if (notes.length > 0 && !selectedNoteId) {
@@ -136,6 +138,17 @@ function App() {
     setSelectedNoteId(newNote.id);
   };
 
+  const handleOnboardingComplete = () => {
+    setOnboardingStatus(true);
+    setShowOnboarding(false);
+  };
+
+  const handleCreateFirstNote = () => {
+    const newNote = addNote({ title: 'My First Note', body: 'Welcome to NOTINO! This is your first note. Start writing here...', folderId: activeFolderId });
+    setNotes(prev => [...prev, newNote]);
+    setSelectedNoteId(newNote.id);
+  };
+
   const handleSelectNote = (id) => {
     setSelectedNoteId(id);
     if (isMobile) {
@@ -173,6 +186,16 @@ function App() {
     }
     setShowSidebar(prev => !prev);
   };
+
+  // Show onboarding for first-time users with no notes
+  if (showOnboarding) {
+    return (
+      <WelcomeOnboarding
+        onComplete={handleOnboardingComplete}
+        onCreateFirstNote={handleCreateFirstNote}
+      />
+    );
+  }
 
   return (
     <div ref={appRef} className="app-container">

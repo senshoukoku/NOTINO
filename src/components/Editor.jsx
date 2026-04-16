@@ -2,7 +2,7 @@ import { useState, useEffect, forwardRef } from 'react';
 import { Save, Trash, Menu, Plus, Tag as TagIcon } from 'lucide-react';
 import CalendarButton from './CalendarButton';
 
-const Editor = forwardRef(({ note, folders, onUpdateNote, toggleSidebar, isLoading, isReady, isMobile }, ref) => {
+const Editor = forwardRef(({ note, onUpdateNote, toggleSidebar, isLoading, isReady, isMobile }, ref) => {
   const [title, setTitle] = useState(note?.title || '');
   const [body, setBody] = useState(note?.body || '');
   const [tags, setTags] = useState(note?.tags || []);
