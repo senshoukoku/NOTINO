@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 export default function Modal({ isOpen, onClose, title, message, type, onConfirm, confirmText = "Close" }) {
   const [shouldRender, setShouldRender] = useState(isOpen);
   const [isAnimating, setIsAnimating] = useState(false);
+  const isMobile = window.innerWidth < 768;
 
   useEffect(() => {
     if (isOpen) {
@@ -31,7 +32,7 @@ export default function Modal({ isOpen, onClose, title, message, type, onConfirm
       }`}
     >
       <div
-        className={`modal-content ${
+        className={`modal-content ${isMobile ? 'modal-content-mobile' : ''} ${
           isAnimating ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-90 translate-y-8"
         }`}
       >

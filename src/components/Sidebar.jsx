@@ -8,7 +8,7 @@ const Sidebar = forwardRef(({
   notes, folders, selectedNoteId, activeFolderId, 
   onSelectNote, onAddNote, onAddFolder, onUpdateFolder, onDeleteFolder, onDeleteNote, onTogglePin,
   onSelectFolder, onReorderNotes, onReorderFolders, onMoveNoteToFolder,
-  search, onSearch, isVisible, toggleSidebar, className
+  search, onSearch, isVisible, toggleSidebar, isMobile, className
 }, ref) => {
   const [isAddingFolder, setIsAddingFolder] = useState(false);
   const [newFolderName, setNewFolderName] = useState('');
@@ -139,7 +139,9 @@ const Sidebar = forwardRef(({
 
   return (
     <div ref={ref}
-      className={`sidebar-panel ${isVisible ? 'sidebar-panel-visible' : 'sidebar-panel-hidden'} ${className}`}
+      className={`sidebar-panel ${isVisible ? 'sidebar-panel-visible' : 'sidebar-panel-hidden'} ${isMobile ? 'sidebar-panel-mobile' : ''} ${className}`}
+      role="navigation"
+      aria-label="Notes sidebar"
     >
       <div className="sidebar-header">
         <div className="flex items-center mb-4">
@@ -150,6 +152,7 @@ const Sidebar = forwardRef(({
           <button
             onClick={onAddNote}
             className="ml-auto btn-sidebar-toggle btn-action"
+            aria-label="Add new note"
           >
             <Plus size={16} />
           </button>
@@ -162,6 +165,7 @@ const Sidebar = forwardRef(({
             value={search}
             onChange={(e) => onSearch(e.target.value)}
             className="search-input"
+            aria-label="Search notes"
           />
         </div>
       </div>
@@ -213,7 +217,16 @@ const Sidebar = forwardRef(({
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => handleDrop(e, note.id)}
             onClick={() => onSelectNote(note.id)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onSelectNote(note.id);
+              }
+            }}
             className={`note-item ${selectedNoteId === note.id ? 'note-item-active' : ''}`}
+            aria-label={`Note: ${note.title || 'Untitled'}`}
+            role="button"
+            tabIndex={0}
           >
             <div className="flex items-center justify-between">
               <h3 className="note-item-title">{note.title || 'Untitled'}</h3>
@@ -221,12 +234,14 @@ const Sidebar = forwardRef(({
                 <button
                   onClick={(e) => { e.stopPropagation(); onTogglePin(note.id); }}
                   className={`p-1 transition-colors ${note.isPinned ? 'text-yellow-400' : 'hover:text-yellow-400'}`}
+                  aria-label={note.isPinned ? 'Unpin note' : 'Pin note'}
                 >
                   <Pin size={14} fill={note.isPinned ? "currentColor" : "none"} />
                 </button>
                 <button
                   onClick={(e) => { e.stopPropagation(); onDeleteNote(note.id); }}
                   className="p-1 hover:text-red-400 transition-colors"
+                  aria-label="Delete note"
                 >
                   <Trash2 size={14} />
                 </button>

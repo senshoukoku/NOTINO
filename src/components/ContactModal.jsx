@@ -11,6 +11,7 @@ export default function ContactModal({ isOpen, onClose }) {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isMobile = window.innerWidth < 768;
 
   useEffect(() => {
     if (isOpen) {
@@ -76,7 +77,7 @@ export default function ContactModal({ isOpen, onClose }) {
       }`}
     >
       <div
-        className={`modal-content ${
+        className={`modal-content ${isMobile ? 'modal-content-mobile' : ''} ${
           isAnimating ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-90 translate-y-8"
         }`}
       >

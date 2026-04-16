@@ -6,7 +6,7 @@ const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const SCOPES = 'https://www.googleapis.com/auth/calendar.events';
 
-export default function CalendarButton({ note }) {
+export default function CalendarButton({ note, isMobile }) {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [modal, setModal] = useState(null);
@@ -96,18 +96,20 @@ export default function CalendarButton({ note }) {
         <button
           onClick={handleSignIn}
           className="btn-google"
+          aria-label={isMobile ? "Sign in to Google" : undefined}
         >
-          <Calendar size={16} className="mr-2" />
-          Sign in to Google
+          <Calendar size={16} className={isMobile ? "" : "mr-2"} />
+          {!isMobile && "Sign in to Google"}
         </button>
       ) : (
         <button
           onClick={handleSync}
           disabled={isLoading}
           className="btn-sync"
+          aria-label={isMobile ? "Sync to calendar" : undefined}
         >
-          <Calendar size={16} className="mr-2" />
-          {isLoading ? 'Syncing...' : 'Sync to Calendar'}
+          <Calendar size={16} className={isMobile ? "" : "mr-2"} />
+          {!isMobile && (isLoading ? 'Syncing...' : 'Sync to Calendar')}
         </button>
       )}
       <Modal isOpen={!!modal} onClose={() => setModal(null)} {...modal} />

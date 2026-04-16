@@ -17,6 +17,7 @@ function App() {
   const [search, setSearch] = useState('');
   const [modal, setModal] = useState(null);
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
     if (notes.length > 0 && !selectedNoteId) {
@@ -28,6 +29,25 @@ function App() {
     // This triggers the entrance animation only once on mount
     setIsAppReady(true);
   }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    // Mobile sidebar logic
+    if (isMobile) {
+      if (notes.length === 0) {
+        setShowSidebar(true); // Always show when no notes
+      } else {
+        setShowSidebar(false); // Hide when notes present, unless manually toggled during edit
+      }
+    }
+  }, [isMobile, notes.length]);
 
   const appRef = useRef(null);
   const sidebarRef = useRef(null);
@@ -144,6 +164,10 @@ function App() {
   const selectedNote = notes.find(note => note.id === selectedNoteId);
 
   const toggleSidebar = () => {
+    if (isMobile && notes.length === 0) {
+      // Cannot hide sidebar when no notes on mobile
+      return;
+    }
     setShowSidebar(prev => !prev);
   };
 
@@ -171,6 +195,7 @@ function App() {
         onSearch={setSearch}
         isVisible={showSidebar}
         toggleSidebar={toggleSidebar}
+        isMobile={isMobile}
         className={isAppReady ? 'animate-entrance' : ''}
       />
 
@@ -185,7 +210,8 @@ function App() {
           folders={folders}
           onUpdateNote={handleUpdateNote}
           isReady={isAppReady}
-          toggleSidebar={toggleSidebar} /* Pass toggleSidebar to Editor */
+          toggleSidebar={toggleSidebar}
+          isMobile={isMobile}
         />
         <Footer onOpenContact={() => setIsContactOpen(true)} />
       </div>

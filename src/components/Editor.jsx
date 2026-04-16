@@ -2,7 +2,7 @@ import { useState, useEffect, forwardRef } from 'react';
 import { Save, Trash, Menu, Plus, Tag as TagIcon } from 'lucide-react';
 import CalendarButton from './CalendarButton';
 
-const Editor = forwardRef(({ note, folders, onUpdateNote, toggleSidebar, isLoading, isReady }, ref) => {
+const Editor = forwardRef(({ note, folders, onUpdateNote, toggleSidebar, isLoading, isReady, isMobile }, ref) => {
   const [title, setTitle] = useState(note?.title || '');
   const [body, setBody] = useState(note?.body || '');
   const [tags, setTags] = useState(note?.tags || []);
@@ -69,7 +69,7 @@ const Editor = forwardRef(({ note, folders, onUpdateNote, toggleSidebar, isLoadi
   return (
     <div ref={ref} className={`editor-panel ${isReady ? 'editor-panel-ready' : ''}`}>
       <div className="editor-header">
-        <button onClick={toggleSidebar} className="mr-4 btn-sidebar-toggle btn-action">
+        <button onClick={toggleSidebar} className="mr-4 btn-sidebar-toggle btn-action" aria-label="Toggle sidebar">
           <Menu size={20} />
         </button>
         <input
@@ -78,16 +78,18 @@ const Editor = forwardRef(({ note, folders, onUpdateNote, toggleSidebar, isLoadi
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="editor-title-input"
+          aria-label="Note title"
         />
         <div className="editor-actions">
           <button
             onClick={handleSave}
             className="btn-save"
+            aria-label={isMobile ? "Save note" : undefined}
           >
-            <Save size={16} className="mr-2" />
-            Save
+            <Save size={16} className={isMobile ? "" : "mr-2"} />
+            {!isMobile && "Save"}
           </button>
-          <CalendarButton note={{ ...note, title, body }} />
+          <CalendarButton note={{ ...note, title, body }} isMobile={isMobile} />
         </div>
       </div>
       <textarea
@@ -95,6 +97,7 @@ const Editor = forwardRef(({ note, folders, onUpdateNote, toggleSidebar, isLoadi
         value={body}
         onChange={(e) => setBody(e.target.value)}
         className="editor-textarea"
+        aria-label="Note content"
       />
     </div>
   );
